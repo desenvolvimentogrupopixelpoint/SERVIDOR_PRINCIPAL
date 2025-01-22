@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informações do Sistema</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #001f3f;
+            color: white;
+        }
+        header {
+            background-color: #003366;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+        }
+        .logo {
+            height: 60px;
+        }
+        .back-button {
+            background-color: #28a745;
+            border: none;
+            padding: 10px 20px;
+            color: white;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .back-button:hover {
+            background-color: #218838;
+        }
+        .main-title {
+            text-align: center;
+            font-size: 36px;
+            margin: 30px 0;
+            color: #1E90FF;
+        }
+        .content {
+            width: 90%;
+            max-width: 1000px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+        .content h2 {
+            color: #1E90FF;
+            margin-top: 30px;
+        }
+        .content ul {
+            margin-left: 20px;
+            padding-left: 20px;
+            list-style: none;
+        }
+        .content ul li {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        .content ul li::before {
+            content: '\25CF';
+            color: #1E90FF;
+            margin-right: 10px;
+        }
+        .content p {
+            text-align: justify;
+        }
+        .info-card {
+            background-color: #00264d;
+            border: 1px solid #00509E;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+        footer {
+            text-align: center;
+            padding: 15px;
+            background-color: #003366;
+            color: white;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+            box-shadow: 0px -4px 6px rgba(0, 0, 0, 0.3);
+        }
+        .footer-link {
+            color: #1E90FF;
+            text-decoration: none;
+        }
+        .footer-link:hover {
+            text-decoration: underline;
+        }
+        .example-button {
+            background-color: #007bff;
+            border: none;
+            padding: 10px 20px;
+            color: white;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+            display: inline-block;
+            text-align: center;
+        }
+        .example-button:hover {
+            background-color: #0056b3;
+        }
+        .highlight {
+            background-color: #00509E;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            margin: 20px 0;
+            border: 1px solid #00509E;
+            border-radius: 10px;
+            background-color: #00264d;
+            padding: 15px;
+        }
+        .devices-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+            color: white;
+        }
+        .devices-table th, .devices-table td {
+            border: 1px solid #00509E;
+            padding: 10px;
+        }
+        .devices-table th {
+            background-color: #00509E;
+            font-weight: bold;
+        }
+        .devices-table td {
+            background-color: #003366;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="/static/images/Logop.png" alt="Logo do Sistema" class="logo">
+        <button class="back-button" onclick="location.href='/'">Voltar</button>
+    </header>
+
+    <main class="content">
+        <h1 class="main-title">Guia Completo do PixelPlay</h1>
+
+        <p>Bem-vindo ao <span class="highlight">PixelPlay Gerenciador de Mídias</span>, um sistema desenvolvido para simplificar o gerenciamento de mídias em telas remotas. Com uma interface intuitiva e recursos avançados, este guia ajudará você a aproveitar ao máximo todas as funcionalidades.</p>
+
+        <h2>Funcionalidades Principais</h2>
+        <ul>
+            <li><strong>Gerenciamento de Grupos:</strong> Crie, edite ou exclua grupos para organizar seus dispositivos de forma eficiente.</li>
+            <li><strong>Configuração de Dispositivos:</strong> Adicione dispositivos ao sistema com endereços IP específicos, utilizando redes como Tailscale.</li>
+            <li><strong>Envio de Mídias:</strong> Faça upload de vídeos ou imagens, definindo horários de início e término para exibição.</li>
+            <li><strong>Monitoramento em Tempo Real:</strong> Verifique o status dos dispositivos e mídias para garantir que tudo esteja funcionando corretamente.</li>
+            <li><strong>Personalização:</strong> Configure preferências como formato de data, cores do tema e outros ajustes.</li>
+        </ul>
+
+        <h2>Passo a Passo de Uso</h2>
+        <h3>1. Criar um Novo Grupo</h3>
+        <p>Na página inicial, clique no botão <span class="highlight">"Adicionar Novo Grupo"</span>:</p>
+        <button class="example-button">Adicionar Novo Grupo</button>
+        <p>Preencha os campos obrigatórios como <em>nome do grupo</em> e <em>endereço IP</em>, depois clique em "Criar". O grupo será exibido na tabela com seu status.</p>
+
+        <h3>2. Adicionar Dispositivos</h3>
+        <p>Acesse um grupo e clique no botão <span class="highlight">"Adicionar Novo Dispositivo"</span>. Preencha os dados do dispositivo, como:</p>
+        <ul>
+            <li>Nome do Dispositivo: Ex: <strong>"Tela Entrada"</strong>.</li>
+            <li>Endereço IP: Ex: <strong>"192.168.0.101"</strong>.</li>
+        </ul>
+        <button class="example-button">Adicionar Novo Dispositivo</button>
+
+        <h3>3. Enviar Mídias</h3>
+        <p>No grupo desejado, utilize a tabela abaixo para simular o envio de mídias. Esta tabela é apenas demonstrativa e não possui funcionalidade:</p>
+        <div class="table-container">
+            <table class="devices-table">
+                <thead>
+                    <tr>
+                        <th>Nome da Mídia</th>
+                        <th>Tamanho (MB)</th>
+                        <th>Início</th>
+                        <th>Fim</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Promoção Semana 1</td>
+                        <td>15.2</td>
+                        <td>2025-01-12 08:00</td>
+                        <td>2025-01-19 22:00</td>
+                        <td><button class="example-button">Excluir</button></td>
+                    </tr>
+                    <tr>
+                        <td>Promoção Semana 2</td>
+                        <td>18.5</td>
+                        <td>2025-01-20 08:00</td>
+                        <td>2025-01-26 22:00</td>
+                        <td><button class="example-button">Excluir</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>4. Monitorar Status</h3>
+        <p>Verifique os ícones na tabela de dispositivos para acompanhar o status:</p>
+        <ul>
+            <li><span class="highlight">Verde</span>: Dispositivo ativo.</li>
+            <li><span class="highlight">Cinza</span>: Dispositivo inativo.</li>
+        </ul>
+
+        <h2>Dicas Importantes</h2>
+        <ul>
+            <li>Use vídeos em formato .MP4 e imagens em PNG/JPEG para compatibilidade máxima.</li>
+            <li>Certifique-se de que os dispositivos estão conectados à internet.</li>
+            <li>Faça backups regulares das configurações do sistema.</li>
+        </ul>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 PixelPlay. Todos os direitos reservados. <a href="/contato" class="footer-link"></a></p>
+    </footer>
+</body>
+</html>
