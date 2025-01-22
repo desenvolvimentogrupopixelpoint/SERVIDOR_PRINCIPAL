@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PixelPlay Group Manager</title>
+    <style>
+        /* Geral */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #0D1B2A;
+            color: #FFFFFF;
+        }
+
+        /* Cabeçalho */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #1B263B;
+        }
+
+        header img {
+            height: 40px;
+        }
+
+        header .buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        header button {
+            background-color: #0A9396;
+            color: #FFFFFF;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        header button:hover {
+            background-color: #005F73;
+        }
+
+        /* Título Principal */
+        h1 {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 2.5em;
+            color: #E9D8A6;
+        }
+
+        /* Tabela */
+        table {
+            width: 90%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        table thead {
+            background-color: #005F73;
+        }
+
+        table thead th {
+            padding: 15px;
+            text-align: left;
+            color: #FFFFFF;
+        }
+
+        table tbody tr {
+            background-color: #1B263B;
+            transition: background-color 0.3s;
+        }
+
+        table tbody tr:hover {
+            background-color: #005F73;
+        }
+
+        table tbody td {
+            padding: 15px;
+            border-bottom: 1px solid #0A9396;
+        }
+
+        table button {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        table .edit {
+            background-color: #0A9396;
+            color: #FFFFFF;
+        }
+
+        table .delete {
+            background-color: #AE2012;
+            color: #FFFFFF;
+        }
+
+        table button:hover {
+            opacity: 0.8;
+        }
+
+        /* Modais */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #1B263B;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .modal-content input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #0A9396;
+            border-radius: 5px;
+            background-color: #0D1B2A;
+            color: #FFFFFF;
+        }
+
+        .modal-content button {
+            margin-top: 10px;
+        }
+
+        /* Rodapé */
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #1B263B;
+            color: #FFFFFF;
+        }
+
+        footer p {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <img src="logo.png" alt="Logo">
+    <div class="buttons">
+        <button onclick="showModal('addModal')">Adicionar Grupo</button>
+        <button onclick="showModal('configModal')">Configurações</button>
+        <button id="date">Data Atual</button>
+    </div>
+</header>
+
+<h1>PixelPlay Group Manager</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>Nome do Grupo</th>
+            <th>Endereço</th>
+            <th>Status</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Grupo 1</td>
+            <td>Endereço 1</td>
+            <td>Ativo</td>
+            <td>
+                <button class="edit">Editar</button>
+                <button class="delete">Excluir</button>
+            </td>
+        </tr>
+        <tr>
+            <td>Grupo 2</td>
+            <td>Endereço 2</td>
+            <td>Inativo</td>
+            <td>
+                <button class="edit">Editar</button>
+                <button class="delete">Excluir</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<div id="addModal" class="modal">
+    <div class="modal-content">
+        <h2>Adicionar Grupo</h2>
+        <input type="text" placeholder="Nome do Grupo">
+        <input type="text" placeholder="Endereço">
+        <button onclick="closeModal('addModal')">Confirmar</button>
+        <button onclick="closeModal('addModal')">Cancelar</button>
+    </div>
+</div>
+
+<div id="configModal" class="modal">
+    <div class="modal-content">
+        <h2>Configurações</h2>
+        <p>Ajuste as configurações do sistema aqui.</p>
+        <button onclick="closeModal('configModal')">Fechar</button>
+    </div>
+</div>
+
+<footer>
+    <p>&copy; 2025 PixelPlay. Todos os direitos reservados.</p>
+</footer>
+
+<script>
+    // Exibir modal
+    function showModal(id) {
+        document.getElementById(id).style.display = 'flex';
+    }
+
+    // Fechar modal
+    function closeModal(id) {
+        document.getElementById(id).style.display = 'none';
+    }
+
+    // Atualizar data
+    document.getElementById('date').innerText = new Date().toLocaleDateString('pt-BR');
+
+    // Atualização periódica do status
+    setInterval(() => {
+        console.log("Atualizando status dos grupos...");
+        // Simulação de requisição fetch
+    }, 10000);
+</script>
+
+</body>
+</html>
