@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes do Grupo</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <style>
+
+
+
+
+table {
+        table-layout: fixed;
+        border-spacing: 0;
+    }
+
+    table th,
+    table td {
+        text-align: center;
+        word-wrap: break-word; /* Evita estouro de texto */
+    }
+
+    /* Botão de exclusão */
+    .delete-btn {
+        background-color: #FF4C4C;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 5px 10px;
+        cursor: pointer;
+    }
+
+    .delete-btn:hover {
+        background-color: #FF0000;
+    }
+/* Botões de exclusão */
+.delete-btn {
+    background-color: #FF4C4C; /* Cor vermelha */
+    color: white; /* Cor do texto */
+    border: none;
+    border-radius: 5px; /* Bordas arredondadas */
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 14px; /* Tamanho do texto */
+}
+
+.delete-btn:hover {
+    background-color: #FF0000; /* Vermelho mais escuro ao passar o mouse */
+}
+
+/* Status dos vídeos */
+.status {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.status.ativo {
+    color: green;
+}
+
+.status.inativo {
+    color: white;
+}
+
+/* Estilo geral da página */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #001f3f;
+    color: white;
+}
+
+/* Cabeçalho */
+header {
+    background-color: #003366;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    height: 40px;
+}
+
+.back-button {
+    background-color: #28a745;
+    border: none;
+    padding: 10px 20px;
+    color: white;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* Título principal */
+.main-title {
+    text-align: center;
+    font-size: 24px;
+    margin: 20px 0;
+}
+
+/* Detalhes do grupo */
+.group-details {
+    background-color: #00264d;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    margin: 0 auto;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.add-device-button {
+    background-color: #007bff;
+    border: none;
+    padding: 10px 20px;
+    color: white;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* Tabela de dispositivos */
+.devices-table {
+    width: 90%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    background-color: #00264d;
+}
+
+.devices-table th, .devices-table td {
+    padding: 10px;
+    border: 1px solid #00509E;
+    text-align: center;
+}
+
+.devices-table th {
+    background-color: #00509E;
+    color: white;
+}
+
+.delete-button {
+    background-color: #dc3545;
+    border: none;
+    padding: 5px 10px;
+    color: white;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.delete-button:hover {
+    background-color: #a71d2a;
+}
+
+/* Rodapé */
+footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #003366;
+    color: white;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+/* Seção de upload */
+.upload-section {
+    background-color: #00264d;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    margin: 20px auto;
+}
+
+.upload-section h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: white;
+}
+
+.upload-section form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.upload-section label {
+    font-weight: bold;
+}
+
+.upload-section input[type="file"],
+.upload-section input[type="datetime-local"],
+.upload-section button {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+.upload-section button {
+    background-color: #28a745;
+    color: white;
+    cursor: pointer;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    width: 400px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.modal-content h2 {
+    margin-bottom: 20px;
+    color: #003366;
+    font-size: 22px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    color: #333333;
+    margin-bottom: 5px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.confirm-btn {
+    background-color: #007bff;
+    border: none;
+    padding: 10px 20px;
+    color: white;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.confirm-btn:hover {
+    background-color: #0056b3;
+}
+
+.cancel-btn {
+    background-color: #dc3545;
+    border: none;
+    padding: 10px 20px;
+    color: white;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.cancel-btn:hover {
+    background-color: #a71d2a;
+}
+
+    </style>
+<header style="display: flex; align-items: center; justify-content: space-between; background-color: #003366; padding: 10px 20px;">
+    <!-- Logo à esquerda -->
+    <img src="/static/images/Logop.png" alt="Logo" class="logo" style="height: 60px;">
+
+    <!-- Detalhes no centro -->
+    <div class="group-details" style="text-align: center; flex-grow: 1;">
+        <h2 style="margin: 0; color: white;">Detalhes do Grupo</h2>
+        <p style="margin: 0; font-size: 14px;"><strong>Nome do Grupo:</strong> {{ grupo.nome }}</p>
+        <p style="margin: 0; font-size: 14px;"><strong>Endereço:</strong> {{ grupo.endereco }}</p>
+    </div>
+
+    <!-- Botão Voltar à direita -->
+    <button class="back-button" onclick="window.history.back();" style="background-color: #28a745; border: none; padding: 10px 20px; color: white; border-radius: 5px; font-size: 16px; cursor: pointer;">Voltar</button>
+</header>
+
+
+
+
+
+    <main>
+
+        <!-- Upload de Mídia -->
+<div class="upload-section" style="max-width: 500px; margin: 30px auto; text-align: center;" id="upload-section">
+    <h2>Enviar Mídia</h2>
+    <form id="upload-form" style="display: flex; flex-direction: column; gap: 15px;">
+        <label for="file" style="text-align: left;">Selecionar Mídia</label>
+        <input type="file" id="file" name="file" required style="display: none;">
+        <label for="file" id="file-label" style="display: inline-block; padding: 10px 20px; background-color: #5bc0de; color: white; border-radius: 5px; cursor: pointer; text-align: center; width: auto;">
+            Escolher Ficheiro
+        </label>
+        <span id="file-name" style="text-align: left;">Nenhum ficheiro selecionado</span>
+
+        <label for="start-date" style="text-align: left;">Início:</label>
+        <input type="datetime-local" id="start-date" name="start-date" required style="padding: 10px; border-radius: 5px; border: 1px solid #ccc;">
+
+        <label for="end-date" style="text-align: left;">Fim:</label>
+        <input type="datetime-local" id="end-date" name="end-date" required style="padding: 10px; border-radius: 5px; border: 1px solid #ccc;">
+    </form>
+
+    <div style="margin-top: 20px;">
+        <button id="start-sending-btn" class="start-button" style="background-color: #28a745; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; width: 100%;">
+            Enviar Mídia para Todos
+        </button>
+    </div>
+</div>
+
+
+
+
+        <!-- Tabela de Mídias Ativas -->
+<h2 style="text-align: center; margin-top: 20px;">Mídias Ativas</h2>
+<table class="devices-table" style="width: 840px; margin: 0 auto;">
+    <thead>
+        <tr>
+            <th style="width: 35%;">Nome da Mídia</th>
+            <th style="width: 15%;">Tamanho (MB)</th>
+            <th style="width: 20%;">Início</th>
+            <th style="width: 20%;">Fim</th>
+            <th style="width: 10%;">Ações</th>
+        </tr>
+    </thead>
+    <tbody id="media-list">
+        <!-- Preenchido dinamicamente -->
+    </tbody>
+</table>
+
+<!-- Tabela de Mídias Inativas -->
+<h2 style="text-align: center; margin-top: 20px;">Mídias Inativas</h2>
+<table class="devices-table" style="width: 840px; margin: 0 auto;">
+    <thead>
+        <tr>
+            <th style="width: 35%;">Nome da Mídia</th>
+            <th style="width: 15%;">Tamanho (MB)</th>
+            <th style="width: 20%;">Início</th>
+            <th style="width: 20%;">Fim</th>
+            <th style="width: 10%;">Ações</th>
+        </tr>
+    </thead>
+    <tbody id="inactive-media-list">
+        <!-- Preenchido dinamicamente -->
+    </tbody>
+</table>
+
+
+
+
+
+
+
+        <!-- Botão para adicionar dispositivo -->
+        <div class="button-container">
+            <button class="add-device-button" id="add-device-btn">Adicionar Novo Dispositivo</button>
+        </div>
+
+        <!-- Tabela de Dispositivos -->
+<table class="devices-table" style="width: 840px; margin: 0 auto;">
+    <thead>
+        <tr>
+            <th style="width: 35%;">Nome do Dispositivo</th>
+            <th style="width: 30%;">IP do Tailscale</th>
+            <th style="width: 15%;">Status</th>
+            <th style="width: 10%;">Status do Envio</th>
+            <th style="width: 10%;">Ações</th>
+        </tr>
+    </thead>
+    <tbody id="devices-table-body">
+    {% for dispositivo in grupo.dispositivos %}
+    <tr data-ip="{{ dispositivo.endereco }}">
+        <td>{{ dispositivo.nome }}</td>
+        <td>{{ dispositivo.endereco }}</td>
+        <td>
+            <span class="status" id="status-{{ loop.index }}">Verificando...</span>
+        </td>
+        <td class="status-cell" style="text-align: center;"></td>
+        <td style="text-align: center;">
+            <button class="delete-button" onclick="deleteDevice('{{ dispositivo.nome }}')">Excluir</button>
+        </td>
+    </tr>
+    {% endfor %}
+</tbody>
+
+</table>
+
+
+        <!-- Modal para Adicionar Novo Dispositivo -->
+        <div id="add-device-modal" class="modal">
+            <div class="modal-content">
+                <h2>Adicionar Novo Dispositivo</h2>
+                <form id="add-device-form">
+                    <div class="form-group">
+                        <label for="device-name">Nome do Dispositivo:</label>
+                        <input type="text" id="device-name" placeholder="Ex: Dispositivo 1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="device-ip">IP do Dispositivo:</label>
+                        <input type="text" id="device-ip" placeholder="Ex: 192.168.0.1" required>
+                    </div>
+                    <div class="modal-buttons">
+                        <button type="submit" class="confirm-btn">Adicionar</button>
+                        <button type="button" id="close-modal" class="cancel-btn">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Modal para Confirmação de Exclusão -->
+        <div id="delete-modal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <h2>Confirmação de Exclusão</h2>
+                <p>Tem certeza que deseja excluir a mídia <strong id="media-name"></strong> de todos os dispositivos?</p>
+                <div class="modal-buttons">
+                    <button id="confirm-delete-btn" class="confirm-btn">Sim</button>
+                    <button id="cancel-delete-btn" class="cancel-btn">Cancelar</button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+.
+    <footer>
+        <p>&copy; 2025 PixelPlay. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+
+// Atualiza o nome do arquivo selecionado
+document.getElementById('file').addEventListener('change', function () {
+    const fileName = this.files[0] ? this.files[0].name : 'Nenhum ficheiro selecionado';
+    document.getElementById('file-name').textContent = fileName;
+});
+
+// Exibe o modal para confirmação
+let selectedMedia = null;
+let selectedFolder = null;
+
+// Exibe o modal para confirmação
+function confirmDeleteMedia(mediaName, folder) {
+    console.log("Abrindo modal para exclusão da mídia:", mediaName, "na pasta:", folder);
+    selectedMedia = mediaName;
+    selectedFolder = folder;
+    document.getElementById('media-name').textContent = mediaName;
+    document.getElementById('delete-modal').style.display = 'flex';
+}
+
+// Fecha o modal ao clicar em "Cancelar"
+document.getElementById('cancel-delete-btn').addEventListener('click', () => {
+    selectedMedia = null;
+    selectedFolder = null;
+    document.getElementById('delete-modal').style.display = 'none';
+});
+
+// Confirma a exclusão ao clicar em "Sim"
+document.getElementById('confirm-delete-btn').addEventListener('click', () => {
+    if (selectedMedia && selectedFolder) {
+        console.log("Excluindo mídia:", selectedMedia, "da pasta:", selectedFolder);
+        deleteMediaFromAll(selectedMedia, selectedFolder);
+        document.getElementById('delete-modal').style.display = 'none';
+    } else {
+        console.error("Mídia ou pasta não selecionada!");
+    }
+});
+
+// Abrir o modal
+document.getElementById('add-device-btn').addEventListener('click', () => {
+    document.getElementById('add-device-modal').style.display = 'flex';
+});
+
+// Fechar o modal
+document.getElementById('close-modal').addEventListener('click', () => {
+    document.getElementById('add-device-modal').style.display = 'none';
+});
+
+// Adicionar dispositivo
+document.getElementById('add-device-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const deviceName = document.getElementById('device-name').value;
+    const deviceIp = document.getElementById('device-ip').value;
+
+    // Verificar se o IP já está em uso
+    const existingIps = Array.from(document.querySelectorAll('#devices-table-body td:nth-child(2)'))
+        .map(td => td.textContent.trim());
+    if (existingIps.includes(deviceIp)) {
+        alert('Erro: O IP já está em uso. Por favor, insira um IP diferente.');
+        return;
+    }
+
+    fetch(`/grupo/{{ grupo.nome }}/add-device`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            nome: deviceName,
+            endereco: deviceIp
+        }),
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            alert(data.message);
+            location.reload();
+        })
+        .catch((error) => console.error('Erro ao adicionar dispositivo:', error));
+});
+
+function deleteDevice(deviceName) {
+    if (confirm(`Tem certeza que deseja excluir o dispositivo "${deviceName}"?`)) {
+        fetch(`/grupo/{{ grupo.nome }}/delete-device`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ nome: deviceName }),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                alert(data.message);
+                location.reload();
+            })
+            .catch((error) => {
+                console.error('Erro ao excluir dispositivo:', error);
+                alert('Erro ao excluir o dispositivo. Tente novamente.');
+            });
+    }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    const updateTable = () => {
+        const rows = Array.from(document.querySelectorAll("#devices-table-body tr"));
+
+        rows.forEach((row) => {
+            const ip = row.getAttribute("data-ip");
+            const statusCell = row.querySelector(".status");
+
+            fetch("/check-status", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ ip: ip }),
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.status === "ATIVO") {
+                        statusCell.textContent = "ATIVO";
+                        statusCell.classList.remove("inativo");
+                        statusCell.classList.add("ativo");
+                    } else {
+                        statusCell.textContent = "INATIVO";
+                        statusCell.classList.remove("ativo");
+                        statusCell.classList.add("inativo");
+                    }
+
+                    reorderTable();
+                })
+                .catch((error) => {
+                    console.error("Erro ao verificar o status:", error);
+                    statusCell.textContent = "INATIVO";
+                    statusCell.classList.remove("ativo");
+                    statusCell.classList.add("inativo");
+                    reorderTable();
+                });
+        });
+    };
+
+    const reorderTable = () => {
+        const tbody = document.getElementById("devices-table-body");
+        const rows = Array.from(tbody.querySelectorAll("tr"));
+
+        rows.sort((a, b) => {
+            const aStatus = a.querySelector(".status").textContent.trim();
+            const bStatus = b.querySelector(".status").textContent.trim();
+
+            if (aStatus === "INATIVO" && bStatus === "ATIVO") return -1;
+            if (aStatus === "ATIVO" && bStatus === "INATIVO") return 1;
+            return 0;
+        });
+
+        rows.forEach((row) => tbody.appendChild(row));
+    };
+
+    setInterval(updateTable, 5000);
+
+    updateTable();
+});
+
+
+function startRealTimeUpdate(fileName, startTime, endTime) {
+    const devices = Array.from(document.querySelectorAll('#devices-table-body tr'));
+    const dispositivos = devices.map(row => {
+        return {
+            endereco: row.getAttribute('data-ip'),
+            nome: row.querySelector('td:first-child').textContent.trim()
+        };
+    });
+
+    fetch('/send-media-stream', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ dispositivos, file_name: fileName, start_time: startTime, end_time: endTime })
+    })
+        .then(response => response.json())
+        .then(data => {
+            data.results.forEach(result => {
+                const row = devices.find(row => row.getAttribute('data-ip') === result.ip);
+                const statusCell = row.querySelector('.status-cell');
+
+                if (result.returncode === 0 && result.output.includes('success')) {
+                    statusCell.innerHTML = "✅";
+                } else {
+                    statusCell.innerHTML = "❌";
+                }
+            });
+
+            setTimeout(() => {
+                limparStatusEnvio();
+            }, 60000);
+        });
+}
+
+function limparStatusEnvio() {
+    const devices = Array.from(document.querySelectorAll('#devices-table-body tr'));
+    devices.forEach(row => {
+        const statusCell = row.querySelector('.status-cell');
+        statusCell.innerHTML = '';
+    });
+
+    console.log("Status do envio limpos após 60 segundos.");
+}
+
+function preencherTabelaMidias(tableId, mediaList) {
+    const table = document.getElementById(tableId);
+    table.innerHTML = '';
+
+    if (mediaList.length === 0) {
+        table.innerHTML = '<tr><td colspan="5">Nenhuma mídia encontrada.</td></tr>';
+        return;
+    }
+
+    mediaList.forEach(media => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${media.name}</td>
+            <td>${media.size} MB</td>
+            <td>${media.start_time || '-'} </td>
+            <td>${media.end_time || '-'} </td>
+            <td><button class="delete-btn" onclick="deleteMediaFromAll('${media.name}', '${tableId === 'media-list' ? 'active' : 'inactive'}')">Excluir</button></td>
+        `;
+        table.appendChild(row);
+    });
+}
+
+function atualizarMidias() {
+    // Encontra todas as linhas da tabela de dispositivos
+    const dispositivos = document.querySelectorAll('#devices-table-body tr');
+    if (dispositivos.length === 0) {
+        console.error('Nenhum dispositivo encontrado.');
+        return;
+    }
+
+    // Obtém o último dispositivo
+    const ultimoDispositivo = dispositivos[dispositivos.length - 1];
+    const ipUltimoDispositivo = ultimoDispositivo.getAttribute('data-ip');
+
+    // Faz a solicitação para obter as mídias do último dispositivo
+    fetch(`/atualizar-midias?ip=${ipUltimoDispositivo}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                // Atualiza a tabela de mídias ativas
+                preencherTabelaMidias('media-list', data.media.active || []);
+
+                // Atualiza a tabela de mídias inativas
+                preencherTabelaMidias('inactive-media-list', data.media.inactive || []);
+            } else {
+                console.error('Erro ao carregar mídias:', data.message);
+            }
+        })
+        .catch(error => console.error('Erro ao consultar a API /atualizar-midias:', error));
+}
+
+
+function preencherTabelaMidias(tableId, mediaList) {
+    const table = document.getElementById(tableId);
+    table.innerHTML = ''; // Limpa a tabela antes de preencher
+
+    if (mediaList.length === 0) {
+        table.innerHTML = '<tr><td colspan="5">Nenhuma mídia encontrada.</td></tr>';
+        return;
+    }
+
+    mediaList.forEach(media => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${media.name}</td>
+            <td>${media.size} MB</td>
+            <td>${media.start_time || '-'}</td>
+            <td>${media.end_time || '-'}</td>
+            <td><button class="delete-btn" onclick="deleteMediaFromAll('${media.name}', '${tableId === 'media-list' ? 'active' : 'inactive'}')">Excluir</button></td>
+        `;
+        table.appendChild(row);
+    });
+}
+
+
+setInterval(atualizarMidias, 5000);
+document.addEventListener('DOMContentLoaded', atualizarMidias);
+
+document.getElementById('start-sending-btn').addEventListener('click', () => {
+    const fileInput = document.getElementById('file');
+    const file = fileInput.files[0];
+    const startTime = document.getElementById('start-date').value;
+    const endTime = document.getElementById('end-date').value;
+
+    if (!file || !startTime || !endTime) {
+        alert('Por favor, preencha todos os campos antes de enviar.');
+        return;
+    }
+
+    const dispositivos = Array.from(document.querySelectorAll('#devices-table-body tr')).map(row => {
+        return row.getAttribute('data-ip');
+    });
+
+    if (dispositivos.length === 0) {
+        alert('Nenhum dispositivo encontrado no grupo.');
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('start_time', startTime);
+    formData.append('end_time', endTime);
+    formData.append('dispositivos', JSON.stringify(dispositivos));
+
+    fetch('/send-media-stream', {
+        method: 'POST',
+        body: formData,
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'completed') {
+                alert('Envio concluído com sucesso!');
+                atualizarMidias();
+            } else {
+                alert(`Erro no envio: ${data.message}`);
+            }
+        })
+        .catch(err => console.error('Erro ao enviar mídia:', err));
+});
+
+function deleteMediaFromAll(filename, folder) {
+    if (confirm(`Tem certeza que deseja excluir a mídia "${filename}" de todos os dispositivos?`)) {
+        fetch('/delete-media-all', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                group_name: '{{ grupo.nome }}',
+                filename: filename,
+                folder: folder
+            }),
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'completed') {
+                    let message = `Resumo da exclusão da mídia "${filename}":\n\n`;
+                    data.results.forEach(result => {
+                        const status = result.status === 'success' ? '✅ Sucesso' : '❌ Erro';
+                        message += `Dispositivo ${result.ip}: ${status}\nMensagem: ${result.message}\n\n`;
+                    });
+                    alert(message);
+                    updateMediaTables();
+                } else {
+                    alert(`Erro: ${data.message}`);
+                }
+            })
+            .catch(err => {
+                console.error('Erro ao excluir mídia de todos os dispositivos:', err);
+                alert('Erro ao excluir a mídia. Por favor, tente novamente.');
+            });
+    }
+}
+
+</script>
+
+
+</body>
+</html>

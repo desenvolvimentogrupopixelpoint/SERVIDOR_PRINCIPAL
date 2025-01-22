@@ -1,0 +1,19 @@
+[
+    {
+        "nome": "0063-Amig\u00e3o",
+        "endereco": "Bento Munhoz - Zona 10 - Maringa PR",
+        "status": "Ativo",
+        "dispositivos": [
+            {
+                "nome": "0063-Amig\u00e3o-Caixa1",
+                "endereco": "100.72.183.12",
+                "status": "Ativo"
+            },
+            {
+                "nome": "0063-Amig\u00e3o-Caixa2",
+                "endereco": "100.121.152.9",
+                "status": "Ativo"
+            }
+        ]
+    }
+]

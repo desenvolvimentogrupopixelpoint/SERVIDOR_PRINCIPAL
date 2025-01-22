@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PixelPlay Gerenciador de Mídias</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <script src="/static/js/scripts.js" defer></script>
+    <style>
+.action-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 20px; /* Bordas arredondadas */
+    font-size: 14px;
+    cursor: pointer;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.action-btn.edit {
+    background-color: #007bff; /* Azul */
+}
+
+.action-btn.edit:hover {
+    background-color: #0056b3; /* Azul mais escuro no hover */
+}
+
+.action-btn.delete {
+    background-color: #dc3545; /* Vermelho */
+}
+
+.action-btn.delete:hover {
+    background-color: #a71d2a; /* Vermelho mais escuro no hover */
+}
+
+.action-btn.view {
+    background-color: #28a745; /* Verde */
+}
+
+.action-btn.view:hover {
+    background-color: #218838; /* Verde mais escuro no hover */
+}
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: #fff;
+    color: #333;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.modal-title {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #dc3545; /* Cor de destaque para exclusão */
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.modal-buttons button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.3s ease;
+    width: 48%;
+}
+
+.btn-primary {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #218838;
+}
+
+.btn-secondary {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #c82333;
+}
+
+.hidden {
+    display: none;
+}
+
+
+/* Estilos para o modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: #fff;
+    color: #333;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.modal-title {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #007bff;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    font-weight: bold;
+    font-size: 14px;
+    color: #555;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.input-group input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.3s ease;
+    width: 48%;
+}
+
+.btn-primary {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #218838;
+}
+
+.btn-secondary {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #c82333;
+}
+
+.hidden {
+    display: none;
+}
+
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #001f3f;
+            color: white;
+        }
+        header {
+            background-color: #003366;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            height: 40px;
+        }
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .header-right span {
+            font-size: 14px;
+        }
+        .info-button, .settings-button {
+            background-color: #00509E;
+            border: none;
+            padding: 5px 10px;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .main-title {
+            text-align: center;
+            font-size: 24px;
+            margin: 20px 0;
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .add-group-button, .delete-group-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .add-group-button {
+            background-color: #28a745;
+            color: white;
+        }
+        .delete-group-button {
+            background-color: #dc3545;
+            color: white;
+        }
+        .groups-table {
+            width: 90%;
+            margin: 0 auto;
+            border-collapse: collapse;
+            background-color: #00264d;
+        }
+        .groups-table th, .groups-table td {
+            padding: 10px;
+            border: 1px solid #00509E;
+            text-align: center;
+        }
+        .groups-table th {
+            background-color: #00509E;
+            color: white;
+        }
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal.hidden {
+            display: none;
+        }
+        .modal-content {
+            background-color: white;
+            color: black;
+            padding: 20px;
+            border-radius: 8px;
+            width: 400px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .modal-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .modal-buttons button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .cancel-btn {
+            background-color: #dc3545;
+            color: white;
+        }
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #003366;
+            color: white;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <img src="/static/images/Logop.png" alt="" class="logo" style="width: 100px; height: 100px;">
+        </div>
+        <div class="header-right">
+            <span id="current-date">08-01-2025 13:00</span>
+            <button class="info-button" onclick="location.href='/informacoes';">Informações</button>
+        </div>
+    </header>
+
+    <main>
+        <h1 class="main-title">PixelPlay Gerenciador de Mídias</h1>
+
+        <div class="button-container">
+            <button class="add-group-button" id="add-group-btn">Adicionar Novo Grupo</button>
+            </div>
+
+        <table class="groups-table">
+            <thead>
+                <tr>
+                    <th>Nome do Grupo</th>
+                    <th>Endereço</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody id="groups-table-body">
+                <!-- Preenchido dinamicamente -->
+            </tbody>
+        </table>
+    </main>
+
+    <!-- Modal Adicionar Grupo -->
+<div id="add-group-modal" class="modal hidden">
+    <div class="modal-content">
+        <h2 class="modal-title">Adicionar Novo Grupo</h2>
+        <form id="add-group-form">
+            <div class="input-group">
+                <label for="group-name">Nome do Grupo:</label>
+                <input type="text" id="group-name" placeholder="Ex: Mercado1020" required>
+            </div>
+            <div class="input-group">
+                <label for="group-address">Endereço do Grupo:</label>
+                <input type="text" id="group-address" placeholder="Ex: 192.168.1.1" required>
+            </div>
+            <div class="modal-buttons">
+                <button type="submit" id="create-group-btn" class="btn btn-primary">Criar</button>
+                <button type="button" id="cancel-add-group-btn" class="btn btn-secondary">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Excluir Grupo -->
+<div id="delete-group-modal" class="modal hidden">
+    <div class="modal-content">
+        <h2 class="modal-title">Excluir Grupo</h2>
+        <p>Tem certeza de que deseja excluir o grupo <strong id="group-name-delete">[Nome do Grupo]</strong>?</p>
+        <div class="modal-buttons">
+            <button id="confirm-delete-group-btn" class="btn btn-primary">Sim</button>
+            <button id="cancel-delete-group-btn" class="btn btn-secondary">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- Modal Excluir Grupo -->
+<div id="delete-group-modal" class="modal hidden">
+    <div class="modal-content">
+        <h2 class="modal-title">Excluir Grupo</h2>
+        <p>Tem certeza de que deseja excluir o grupo <strong id="group-name-delete">[Nome do Grupo]</strong>?</p>
+        <div class="modal-buttons">
+            <button id="confirm-delete-group-btn" class="btn btn-primary">Sim</button>
+            <button id="cancel-delete-group-btn" class="btn btn-secondary">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+
+    <!-- Informações Modal -->
+    <div id="info-modal" class="modal hidden">
+        <div class="modal-content">
+            <h2>Informações</h2>
+            <p>Este sistema foi desenvolvido para gerenciar mídias em telas remotas de forma eficiente, permitindo o upload, exclusão e controle de dispositivos agrupados.</p>
+            <button id="close-info-btn" class="cancel-btn">Fechar</button>
+        </div>
+    </div>
+
+    <!-- Configurações Modal -->
+    <div id="settings-modal" class="modal hidden">
+        <div class="modal-content">
+            <h2>Configurações</h2>
+            <label for="date-format">Formato da Data:</label>
+            <select id="date-format">
+                <option value="dd-MM-yyyy">dd-MM-yyyy</option>
+                <option value="MM-dd-yyyy">MM-dd-yyyy</option>
+                <option value="yyyy-MM-dd">yyyy-MM-dd</option>
+            </select>
+            <label for="theme-color">Cor do Tema:</label>
+            <input type="color" id="theme-color" value="#001f3f">
+            <div class="modal-buttons">
+                <button id="save-settings-btn">Salvar</button>
+                <button id="cancel-settings-btn" class="cancel-btn">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 PixelPlay. Todos os direitos reservados.</p>
+    </footer>
+<script>
+
+
+
+
+
+function updateGroupStatuses() {
+    const rows = document.querySelectorAll("#groups-table-body tr");
+    rows.forEach(row => {
+        const groupName = row.querySelector("td:first-child").textContent.trim();
+        const statusCell = row.querySelector("td:nth-child(3)"); // Célula de status
+
+        fetch(`/grupo/${groupName}/status`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "ATIVO") {
+                    statusCell.textContent = "ATIVO";
+                    statusCell.style.color = "green";
+                } else {
+                    statusCell.textContent = "INATIVO";
+                    statusCell.style.color = "white";
+                }
+            })
+            .catch(error => {
+                console.error(`Erro ao verificar status do grupo ${groupName}:`, error);
+                statusCell.textContent = "INATIVO";
+                statusCell.style.color = "white";
+            });
+    });
+}
+
+// Atualiza os status dos grupos a cada 10 segundos
+setInterval(updateGroupStatuses, 10000);
+
+
+
+
+
+</script>
+</body>
+</html>
