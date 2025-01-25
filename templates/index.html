@@ -386,12 +386,20 @@
     <div class="modal-content">
         <h2 class="modal-title">Excluir Grupo</h2>
         <p>Tem certeza de que deseja excluir o grupo <strong id="group-name-delete">[Nome do Grupo]</strong>?</p>
+
+        <!-- Campo de senha -->
+        <div class="input-group">
+            <label for="delete-password">Digite a senha para confirmar:</label>
+            <input type="password" id="delete-password" placeholder="Senha" required>
+        </div>
+
         <div class="modal-buttons">
             <button id="confirm-delete-group-btn" class="btn btn-primary">Sim</button>
             <button id="cancel-delete-group-btn" class="btn btn-secondary">Cancelar</button>
         </div>
     </div>
 </div>
+
 
 
 
@@ -401,12 +409,21 @@
     <div class="modal-content">
         <h2 class="modal-title">Excluir Grupo</h2>
         <p>Tem certeza de que deseja excluir o grupo <strong id="group-name-delete">[Nome do Grupo]</strong>?</p>
+        
+        <!-- Campo de senha -->
+        <div class="input-group">
+            <label for="delete-password">Digite a senha para confirmar:</label>
+            <input type="password" id="delete-password" placeholder="Senha" required>
+        </div>
+
         <div class="modal-buttons">
             <button id="confirm-delete-group-btn" class="btn btn-primary">Sim</button>
             <button id="cancel-delete-group-btn" class="btn btn-secondary">Cancelar</button>
         </div>
     </div>
 </div>
+
+
 
 
     <!-- Informações Modal -->
@@ -446,32 +463,7 @@
 
 
 
-function updateGroupStatuses() {
-    const rows = document.querySelectorAll("#groups-table-body tr");
-    rows.forEach(row => {
-        const groupName = row.querySelector("td:first-child").textContent.trim();
-        const statusCell = row.querySelector("td:nth-child(3)"); // Célula de status
-
-        fetch(`/grupo/${groupName}/status`)
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === "ATIVO") {
-                    statusCell.textContent = "ATIVO";
-                    statusCell.style.color = "green";
-                } else {
-                    statusCell.textContent = "INATIVO";
-                    statusCell.style.color = "white";
-                }
-            })
-            .catch(error => {
-                console.error(`Erro ao verificar status do grupo ${groupName}:`, error);
-                statusCell.textContent = "INATIVO";
-                statusCell.style.color = "white";
-            });
-    });
-}
-
-// Atualiza os status dos grupos a cada 10 segundos
+// Atualiza os status a cada 10 segundos
 setInterval(updateGroupStatuses, 10000);
 
 

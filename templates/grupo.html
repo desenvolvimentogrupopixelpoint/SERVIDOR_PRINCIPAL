@@ -779,6 +779,11 @@ document.getElementById('start-sending-btn').addEventListener('click', () => {
             if (data.status === 'completed') {
                 alert('Envio concluído com sucesso!');
                 atualizarMidias();
+
+                // Define o temporizador para limpar após 20 segundos
+                setTimeout(() => {
+                    resetUploadSection();
+                }, 20000);
             } else {
                 alert(`Erro no envio: ${data.message}`);
             }
@@ -786,6 +791,8 @@ document.getElementById('start-sending-btn').addEventListener('click', () => {
         .catch(err => console.error('Erro ao enviar mídia:', err));
 });
 
+
+   
 function deleteMediaFromAll(filename, folder) {
     if (confirm(`Tem certeza que deseja excluir a mídia "${filename}" de todos os dispositivos?`)) {
         fetch('/delete-media-all', {
@@ -805,7 +812,7 @@ function deleteMediaFromAll(filename, folder) {
                     let message = `Resumo da exclusão da mídia "${filename}":\n\n`;
                     data.results.forEach(result => {
                         const status = result.status === 'success' ? '✅ Sucesso' : '❌ Erro';
-                        message += `Dispositivo ${result.ip}: ${status}\nMensagem: ${result.message}\n\n`;
+                        message += `Dispositivo ${result.ip}: ${status}\n\n`; // Removida a linha que exibia "Mensagem".
                     });
                     alert(message);
                     updateMediaTables();
@@ -819,6 +826,72 @@ function deleteMediaFromAll(filename, folder) {
             });
     }
 }
+
+
+
+
+
+// Atualiza visualmente o status do envio com base no resultado
+function atualizarStatusEnvio(data) {
+    const devices = Array.from(document.querySelectorAll('#devices-table-body tr'));
+
+    // Define o status inicial como "🔄 Enviando..."
+    devices.forEach(row => {
+        const statusCell = row.querySelector('.status-cell');
+        if (statusCell) {
+            statusCell.innerHTML = "<span style='color: blue;'>🔄</span>"; // Exibe o ícone "Enviando"
+        }
+    });
+
+    // Atualiza o status com base nos resultados do envio
+    data.results.forEach(result => {
+        const row = devices.find(row => row.getAttribute('data-ip') === result.ip);
+        if (!row) return; // Se o dispositivo não for encontrado, pula
+        
+        const statusCell = row.querySelector('.status-cell');
+        if (statusCell) {
+            if (result.returncode === 0 && result.output.toLowerCase().includes('success')) {
+                statusCell.innerHTML = "<span style='color: green;'>✅</span>"; // Exibe o ícone "Concluído"
+            } else {
+                statusCell.innerHTML = "<span style='color: red;'>❌</span>"; // Exibe o ícone "Erro"
+            }
+        }
+    });
+}
+
+// Limpa o status da tabela após um tempo
+function limparStatusEnvio() {
+    const devices = Array.from(document.querySelectorAll('#devices-table-body tr'));
+    devices.forEach(row => {
+        const statusCell = row.querySelector('.status-cell');
+        if (statusCell) {
+            statusCell.innerHTML = ''; // Limpa o conteúdo da célula
+        }
+    });
+    console.log("Status de envio limpos.");
+}
+
+
+fetch('/send-media-stream', {
+    method: 'POST',
+    body: formData,
+})
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'completed') {
+            alert('Envio concluído com sucesso!');
+            atualizarStatusEnvio(data); // Atualiza o status com base no resultado do envio
+        } else {
+            alert(`Erro no envio: ${data.message}`);
+            atualizarStatusEnvio({ results: [] }); // Mostra erro genérico caso falhe
+        }
+    })
+    .catch(err => {
+        console.error('Erro ao enviar mídia:', err);
+        atualizarStatusEnvio({ results: [] }); // Atualiza com erro genérico
+    });
+
+
 
 </script>
 

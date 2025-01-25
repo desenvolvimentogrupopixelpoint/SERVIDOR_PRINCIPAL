@@ -108,7 +108,20 @@ def send_media_stream():
         return jsonify({"status": "error", "message": str(e)}), 500
 
 
+@app.route('/grupo/<group_name>')
+def detalhes_grupo(group_name):
+    # Carrega os grupos do arquivo JSON
+    grupos = load_grupos()
+    
+    # Busca o grupo pelo nome (exatamente ou insensível a maiúsculas/minúsculas)
+    grupo = next((g for g in grupos if g['nome'].lower() == group_name.lower()), None)
 
+    # Se o grupo não for encontrado, renderiza uma página de erro
+    if not grupo:
+        return render_template('404.html', message="Grupo não encontrado.")
+
+    # Renderiza o template com os detalhes do grupo
+    return render_template('grupo.html', grupo=grupo)
 
 
 
@@ -491,17 +504,34 @@ def update_device_status(group_name):
 @app.route('/get-grupos', methods=['GET'])
 def get_grupos():
     grupos = load_grupos()
+
+    # Atualiza o status de cada grupo
+    for grupo in grupos:
+        dispositivos = grupo.get('dispositivos', [])
+        grupo['status'] = "INATIVO"  # Assume que está inativo por padrão
+
+        for dispositivo in dispositivos:
+            ip = dispositivo.get('endereco')
+            try:
+                # Consulta o dispositivo para verificar mídias ativas
+                response = subprocess.run(
+                    ["curl", "-X", "GET", f"http://{ip}:5000/list"],
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                )
+                if response.returncode == 0:
+                    medias = json.loads(response.stdout.decode('utf-8'))
+                    if medias.get("active"):  # Se houver mídias ativas
+                        grupo['status'] = "ATIVO"
+                        break  # Sai do loop, pois já sabemos que o grupo é ativo
+            except Exception:
+                continue  # Ignora erros e tenta o próximo dispositivo
+
+    # Ordena os grupos: os ATIVOS primeiro
+    grupos.sort(key=lambda g: g['status'] == "INATIVO")
+
     return jsonify(grupos)
 
-# Get group details
-@app.route('/grupo/<group_name>', methods=['GET'])
-def grupo(group_name):
-    grupos = load_grupos()
-    group = next((g for g in grupos if g['nome'] == group_name), None)
-    if group:
-        return render_template('grupo.html', grupo=group)
-    else:
-        return "Grupo não encontrado", 404
 
 @app.route('/')
 def index():

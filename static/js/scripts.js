@@ -169,7 +169,6 @@ groupsTableBody.addEventListener("click", (event) => {
           .catch((error) => console.error("Erro ao excluir grupo:", error));
       } else {
         // Se a senha estiver incorreta, não faz nada
-        alert("Senha incorreta. Tente novamente.");
         deletePasswordInput.value = ""; // Limpa o campo de senha
       }
     };
@@ -221,7 +220,60 @@ confirmDeleteBtn.addEventListener("click", () => {
             .catch((error) => console.error("Erro ao excluir grupo:", error));
     } else {
         // Se a senha estiver incorreta, não faz nada
-        alert("Senha incorreta. Tente novamente.");
         deletePasswordInput.value = ""; // Limpa o campo de senha
     }
 });
+
+
+
+// Evento para abrir o modal de exclusão ao clicar no botão "Excluir"
+groupsTableBody.addEventListener("click", (event) => {
+    if (event.target.classList.contains("delete-group-btn")) {
+        const row = event.target.closest("tr");
+        const groupName = row.cells[0].textContent;
+
+        // Atualiza o nome do grupo no modal
+        document.getElementById("group-name-delete").textContent = groupName;
+
+        // Exibe o modal de exclusão
+        document.getElementById("delete-group-modal").classList.remove("hidden");
+    }
+});
+
+// Botão "Sim" para confirmar exclusão
+document.getElementById("confirm-delete-group-btn").addEventListener("click", () => {
+    const password = document.getElementById("delete-password").value.trim();
+    const groupName = document.getElementById("group-name-delete").textContent;
+
+    if (password === "PIPpixelindoor2025") {
+        // Se a senha estiver correta, realiza a exclusão
+        fetch("/excluir_grupo", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ nome: groupName }),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                alert(data.message);
+
+                // Remove a linha da tabela e fecha o modal
+                const rowToDelete = Array.from(groupsTableBody.rows).find(row => row.cells[0].textContent === groupName);
+                if (rowToDelete) rowToDelete.remove();
+                document.getElementById("delete-group-modal").classList.add("hidden");
+            })
+            .catch((error) => console.error("Erro ao excluir grupo:", error));
+    } else {
+        // Exibe mensagem de erro se a senha estiver incorreta
+        document.getElementById("delete-password").value = ""; // Limpa o campo de senha
+    }
+});
+
+// Botão "Cancelar" para fechar o modal de exclusão
+document.getElementById("cancel-delete-group-btn").addEventListener("click", () => {
+    document.getElementById("delete-group-modal").classList.add("hidden");
+    document.getElementById("delete-password").value = ""; // Limpa o campo de senha ao cancelar
+});
+
+
