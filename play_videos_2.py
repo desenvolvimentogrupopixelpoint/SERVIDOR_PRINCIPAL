@@ -451,11 +451,19 @@ def add_device_to_group(group_name):
 
 @app.route('/excluir_grupo', methods=['POST'])
 def excluir_grupo():
-    grupos = load_grupos()
-    group_name = request.json.get('nome')
-    grupos = [grupo for grupo in grupos if grupo['nome'] != group_name]  # Remove o grupo
-    save_grupos(grupos)
-    return jsonify({"message": "Grupo excluído com sucesso!"}), 200
+    grupos = load_grupos()  # Carrega os grupos existentes
+    group_name = request.json.get('nome')  # Obtém o nome do grupo a ser excluído
+
+    # Filtra apenas os grupos que **não** correspondem ao nome fornecido
+    novos_grupos = [grupo for grupo in grupos if grupo['nome'] != group_name]
+
+    # Se nenhum grupo foi removido, significa que o grupo não existia
+    if len(novos_grupos) == len(grupos):
+        return jsonify({"message": "Grupo não encontrado!"}), 404
+
+    save_grupos(novos_grupos)  # Salva a nova lista de grupos sem o excluído
+    return jsonify({"message": f"Grupo '{group_name}' excluído com sucesso!"}), 200
+
 
 
 # Remove a device from a group
