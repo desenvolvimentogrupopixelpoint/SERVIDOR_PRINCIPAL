@@ -2,6 +2,33 @@
     {
         "nome": "0063amigao",
         "endereco": "Bento Munhoz - Zona 10 - Maringa PR",
-        "status": "Ativo"
+        "status": "Ativo",
+        "dispositivos": [
+            {
+                "nome": "0063-Amig\u00e3o-01",
+                "endereco": "100.69.44.30",
+                "status": "Ativo"
+            },
+            {
+                "nome": "0063-Amig\u00e3o-02",
+                "endereco": "100.112.146.69",
+                "status": "Ativo"
+            },
+            {
+                "nome": "0063-Amig\u00e3o-03",
+                "endereco": "100.122.12.72",
+                "status": "Ativo"
+            },
+            {
+                "nome": "0063-Amig\u00e3o-04",
+                "endereco": "100.107.179.50",
+                "status": "Ativo"
+            },
+            {
+                "nome": "0063-Amig\u00e3o-05",
+                "endereco": "100.127.150.12",
+                "status": "Ativo"
+            }
+        ]
     }
 ]
